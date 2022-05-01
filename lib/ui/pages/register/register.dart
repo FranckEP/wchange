@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/ui/pages/login/login.dart';
 
 class Register extends StatefulWidget {
@@ -10,6 +11,30 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final _formkey = GlobalKey<FormState>();
+  final controllerEmail = TextEditingController();
+  final controllerPassword = TextEditingController();
+  AuthController authController = Get.find();
+
+  _signup(theEmail, thePassword) async {
+    try {
+      await authController.signUp(theEmail, thePassword);
+      Get.snackbar(
+        "Sign Up",
+        'OK',
+        icon: Icon(Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (err) {
+      Get.snackbar(
+        "Sign Up",
+        err.toString(),
+        icon: Icon(Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,37 +99,37 @@ class _RegisterState extends State<Register> {
                           height: 10,
                         ),
                         TextFormField(
-                            //keyboardType: TextInputType.emailAddress,
-                            //controller: controllerEmail,
-                            decoration: InputDecoration(
-                          labelText: "Email",
-                          fillColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: controllerEmail,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            ),
-                          ),
-                        )
-                            /*validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Ingrese el email";
-                        } else if (!value.contains('@')) {
-                          return "Ingrese un email válido";
-                        }
-                      },*/
-                            ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Ingrese el email";
+                            } else if (!value.contains('@')) {
+                              return "Ingrese un email válido";
+                            }
+                          },
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
                         TextFormField(
-                          //controller: controllerPassword,
+                          controller: controllerPassword,
                           decoration: InputDecoration(
                             labelText: "Contraseña",
                             fillColor: Colors.white,
@@ -121,16 +146,15 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
-                          //keyboardType: TextInputType.number,
                           obscureText: true,
-                          /*validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Ingrese la contraseña";
-                        } else if (value.length < 6) {
-                          return "La contraseña debería tener como mínimo 6 carácteres";
-                        }
-                        return null;
-                      },*/
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Ingrese la contraseña";
+                            } else if (value.length < 6) {
+                              return "La contraseña debería tener como mínimo 6 carácteres";
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 30,

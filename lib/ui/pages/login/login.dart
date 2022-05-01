@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/ui/pages/homepage.dart';
 import 'package:wchange/ui/pages/register/register.dart';
 import 'package:wchange/ui/pages/registro/mainregistro.dart';
@@ -12,6 +13,24 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  final _formkey = GlobalKey <FormState>();
+  final controllerEmail = TextEditingController();
+  final controllerPassword = TextEditingController();
+  AuthController authController = Get.find();
+
+  _login(theEmail, thePassword) async {
+    print('_login $theEmail $thePassword');
+    try {
+      await authController.login(theEmail, thePassword);
+    } catch (err) {
+       Get.snackbar(
+        "Login",
+        err.toString(),
+        icon: Icon (Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +56,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
-                            //keyboardType: TextInputType.emailAddress,
-                            //controller: controllerEmail,
+                            keyboardType: TextInputType.emailAddress,
+                            controller: controllerEmail,
                             decoration: InputDecoration(
                           labelText: "Email",
                           fillColor: Colors.white,
@@ -54,20 +73,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                               color: Colors.red,
                             ),
                           ),
-                        )
-                            /*validator: (value) {
+                        ),
+                        validator: (value) {
                         if (value!.isEmpty) {
                           return "Ingrese el email";
                         } else if (!value.contains('@')) {
                           return "Ingrese un email válido";
                         }
-                      },*/
+                      },
                             ),
                         const SizedBox(
                           height: 10,
                         ),
                         TextFormField(
-                          //controller: controllerPassword,
+                          controller: controllerPassword,
                           decoration: InputDecoration(
                             labelText: "Contraseña",
                             fillColor: Colors.white,
@@ -84,16 +103,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                             ),
                           ),
-                          //keyboardType: TextInputType.number,
                           obscureText: true,
-                          /*validator: (value) {
+                          validator: (value) {
                         if (value!.isEmpty) {
                           return "Ingrese la contraseña";
                         } else if (value.length < 6) {
                           return "La contraseña debería tener como mínimo 6 carácteres";
                         }
                         return null;
-                      },*/
+                      },
                         ),
                         const SizedBox(
                           height: 30,

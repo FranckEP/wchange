@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "114840235380",
+    "project_id": "wchange-c0731",
+    "storage_bucket": "wchange-c0731.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114840235380:android:c82f3a10314ef6aa891021",
+        "android_client_info": {
+          "package_name": "com.example.wchange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114840235380-qqq9uinue37j1l5i7lmtq2i0ku0d6pk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wchange",
+            "certificate_hash": "627478206603e0a578fc5128971383e06215ec29"
+          }
+        },
+        {
+          "client_id": "114840235380-u7k4on92vb2649mcif2u7h10vefubias.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJicsi3B917KW5pi8L1pZieysoGrkiKzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114840235380-u7k4on92vb2649mcif2u7h10vefubias.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
