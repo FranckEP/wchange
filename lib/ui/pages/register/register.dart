@@ -11,14 +11,15 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final controllerEmail = TextEditingController();
+  final controllerName = TextEditingController();
   final controllerPassword = TextEditingController();
   AuthController authController = Get.find();
 
-  _signup(theEmail, thePassword) async {
+  _signup(theEmail, thePassword, theName) async {
     try {
-      await authController.signUp(theEmail, thePassword);
+      await authController.signUp(theEmail, thePassword, theName);
       Get.snackbar(
         "Sign Up",
         'OK',
@@ -61,125 +62,126 @@ class _RegisterState extends State<Register> {
                         image: AssetImage("assets/W.png"),
                       ))),
                   Form(
-                      //key: _formKey,
+                      key: _formKey,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                            //keyboardType: TextInputType.emailAddress,
-                            //controller: controllerEmail,
-                            decoration: InputDecoration(
-                          labelText: "Nombre completo",
-                          fillColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
+                            TextFormField(
+                              keyboardType: TextInputType.name,
+                              controller: controllerName,
+                              decoration: InputDecoration(
+                                labelText: "Nombre completo",
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Enter user";
+                                } else if (value.length < 6) {
+                                  return "Enter valid user";
+                                }
+                              },
                             ),
-                          ),
-                        )
-                            /*validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Ingrese el email";
-                        } else if (!value.contains('@')) {
-                          return "Ingrese un email válido";
-                        }
-                      },*/
+                            SizedBox(
+                              height: 10,
                             ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: controllerEmail,
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            fillColor: Colors.white,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.red,
+                            TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              controller: controllerEmail,
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Ingrese el email";
+                                } else if (!value.contains('@')) {
+                                  return "Ingrese un email válido";
+                                }
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              controller: controllerPassword,
+                              decoration: InputDecoration(
+                                labelText: "Contraseña",
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Ingrese la contraseña";
+                                } else if (value.length < 6) {
+                                  return "La contraseña debería tener como mínimo 6 carácteres";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            OutlinedButton(
+                              onPressed: () {
+                                final form = _formKey.currentState;
+                                form!.save();
+                                // this line dismiss the keyboard by taking away the focus of the TextFormField and giving it to an unused
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                                if (_formKey.currentState!.validate()) {
+                                  _signup(
+                                      controllerEmail.text,
+                                      controllerPassword.text,
+                                      controllerName.text);
+                                  Get.to(() => const LoginWidget());
+                                }
+                              },
+                              child: const Text("Registrarse"),
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: Colors.red),
+                                primary: Colors.red,
                               ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Ingrese el email";
-                            } else if (!value.contains('@')) {
-                              return "Ingrese un email válido";
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          controller: controllerPassword,
-                          decoration: InputDecoration(
-                            labelText: "Contraseña",
-                            fillColor: Colors.white,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.red,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Ingrese la contraseña";
-                            } else if (value.length < 6) {
-                              return "La contraseña debería tener como mínimo 6 carácteres";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        OutlinedButton(
-                          onPressed: () {
-                            Get.to(() => const LoginWidget());
-                          },
-                          /*onPressed: () async {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          final form = _formKey.currentState;
-                          form!.save();
-                          if (_formKey.currentState!.validate()) {
-                              await _login(
-                              controllerEmail.text, controllerPassword.text);
-                              await authenticationController.usuario(email: controllerEmail.text, password: controllerEmail.text);
-                          }
-                        },*/
-                          child: const Text("Registrarse"),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.red),
-                            primary: Colors.red,
-                          ),
-                        ),
-                      ]))
+                          ]))
                 ])),
       ]),
     );

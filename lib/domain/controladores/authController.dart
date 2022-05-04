@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
+  late Rx<dynamic> _uid = "".obs;
+  String get uid => _uid.value;
   //Futuro para el inicio de sesión
   Future<void> login(theEmail, thePassword) async {
     try {
@@ -10,6 +12,7 @@ class AuthController extends GetxController {
               email: theEmail,
               password: thePassword,
           );
+      _uid.value = theEmail!.id;
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -21,7 +24,7 @@ class AuthController extends GetxController {
   }
 
   //Futuro para el registro
-  Future<void> signUp(email, password) async {
+  Future<void> signUp(email, password, name) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -38,7 +41,7 @@ class AuthController extends GetxController {
   }
 
   //Futuro para cerrar sesión
-   Future<void> logout() async {
+   Future<void> logOut() async {
      try {
         await FirebaseAuth.instance.signOut();
      } catch (e) {

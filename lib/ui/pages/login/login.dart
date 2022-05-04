@@ -13,7 +13,7 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  final _formkey = GlobalKey <FormState>();
+  final _formKey = GlobalKey<FormState>();
   final controllerEmail = TextEditingController();
   final controllerPassword = TextEditingController();
   AuthController authController = Get.find();
@@ -23,14 +23,15 @@ class _LoginWidgetState extends State<LoginWidget> {
     try {
       await authController.login(theEmail, thePassword);
     } catch (err) {
-       Get.snackbar(
+      Get.snackbar(
         "Login",
         err.toString(),
-        icon: Icon (Icons.person, color: Colors.red),
+        icon: Icon(Icons.person, color: Colors.red),
         snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,37 +52,37 @@ class _LoginWidgetState extends State<LoginWidget> {
                       image: AssetImage("assets/W.png"),
                     ))),
                 Form(
-                  //key: _formKey,
+                  key: _formKey,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: controllerEmail,
-                            decoration: InputDecoration(
-                          labelText: "Email",
-                          fillColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: controllerEmail,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
                             ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            ),
-                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Ingrese el email";
+                            } else if (!value.contains('@')) {
+                              return "Ingrese un email válido";
+                            }
+                          },
                         ),
-                        validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Ingrese el email";
-                        } else if (!value.contains('@')) {
-                          return "Ingrese un email válido";
-                        }
-                      },
-                            ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -105,31 +106,29 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                           obscureText: true,
                           validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Ingrese la contraseña";
-                        } else if (value.length < 6) {
-                          return "La contraseña debería tener como mínimo 6 carácteres";
-                        }
-                        return null;
-                      },
+                            if (value!.isEmpty) {
+                              return "Ingrese la contraseña";
+                            } else if (value.length < 6) {
+                              return "La contraseña debería tener como mínimo 6 carácteres";
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 30,
                         ),
                         OutlinedButton(
-                          onPressed: () {
-                            Get.to(() => const MyHomePage());
+                          onPressed: () async {
+                            // this line dismiss the keyboard by taking away the focus of the TextFormField and giving it to an unused
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            final form = _formKey.currentState;
+                            form!.save();
+                            if (_formKey.currentState!.validate()) {
+                              await _login(controllerEmail.text,
+                                  controllerPassword.text);
+                               Get.to(() => const MyHomePage());
+                            }
                           },
-                          /*onPressed: () async {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          final form = _formKey.currentState;
-                          form!.save();
-                          if (_formKey.currentState!.validate()) {
-                              await _login(
-                              controllerEmail.text, controllerPassword.text);
-                              await authenticationController.usuario(email: controllerEmail.text, password: controllerEmail.text);
-                          }
-                        },*/
                           child: const Text("Entrar"),
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(color: Colors.red),

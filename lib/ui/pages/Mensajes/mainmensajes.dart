@@ -52,3 +52,74 @@ class _Mensajes extends State<Mensajes> {
   }
 
 }
+
+/*Widget buildSearchBar() {
+ final searchTextEditingController = TextEditingController();
+ return Container(
+   margin: const EdgeInsets.all(10),
+   height: 20,
+   child: Row(
+     crossAxisAlignment: CrossAxisAlignment.center,
+     children: [
+       const SizedBox(
+         width: 10,
+       ),
+       const Icon(
+         Icons.person_search,
+         color: Colors.white,
+         size: 24,
+       ),
+       const SizedBox(
+         width: 5,
+       ),
+       Expanded(
+         child: TextFormField(
+           textInputAction: TextInputAction.search,
+           controller: searchTextEditingController,
+           onChanged: (value) {
+             if (value.isNotEmpty) {
+               buttonClearController.add(true);
+               setState(() {
+                 _textSearch = value;
+               });
+             } else {
+               buttonClearController.add(false);
+               setState(() {
+                 _textSearch = "";
+               });
+             }
+           },
+           decoration: const InputDecoration.collapsed(
+             hintText: 'Search here...',
+             hintStyle: TextStyle(color: Colors.white),
+           ),
+         ),
+       ),
+       StreamBuilder(
+           stream: buttonClearController.stream,
+           builder: (context, snapshot) {
+             return snapshot.data == true
+                 ? GestureDetector(
+                     onTap: () {
+                       searchTextEditingController.clear();
+                       buttonClearController.add(false);
+                       setState(() {
+                         _textSearch = '';
+                       });
+                     },
+                     child: const Icon(
+                       Icons.clear_rounded,
+                       color: AppColors.greyColor,
+                       size: 20,
+                     ),
+                   )
+                 : const SizedBox.shrink();
+           })
+     ],
+   ),
+   decoration: BoxDecoration(
+     borderRadius: BorderRadius.circular(30),
+     color: Colors.red.shade300,
+   ),
+ );
+}*/

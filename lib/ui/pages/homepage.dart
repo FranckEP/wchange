@@ -20,9 +20,10 @@ class _MyHomePageState extends State<MyHomePage> {
           shadowColor: Colors.red.shade400,
           actions: [
             IconButton(
-              icon:  Image(image: AssetImage("assets/ni.png")), iconSize: 100, 
-              color: Colors.black, 
-              onPressed: (){},
+              icon: Image(image: AssetImage("assets/ni.png")),
+              iconSize: 100,
+              color: Colors.black,
+              onPressed: () {},
             ),
           ],
           bottom: TabBar(
@@ -44,11 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
         ),
-        body: const TabBarView(children: [
-          Publicaciones(),
-          Mensajes(),
-          Menu(),
-        ],),
+        body: TabBarView(
+          children: [
+            Publicaciones(),
+            Mensajes(),
+            Menu(),
+          ],
+        ),
       ),
     );
   }

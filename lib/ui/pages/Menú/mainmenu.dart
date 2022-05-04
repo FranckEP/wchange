@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/ui/pages/login/login.dart';
 
 class Menu extends StatefulWidget {
@@ -10,6 +11,16 @@ class Menu extends StatefulWidget {
 }
 
 class _Menu extends State<Menu> {
+  AuthController authController = Get.find();
+
+  _logout() async {
+    try {
+      await authController.logOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +47,7 @@ class _Menu extends State<Menu> {
       const SizedBox(height: 20),
       OutlinedButton(
         onPressed: () {
-          Get.to(() => const LoginWidget());
+          _logout();
         },
         child: const Text("Cerrar sesión"),
         style: OutlinedButton.styleFrom(
