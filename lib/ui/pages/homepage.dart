@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wchange/ui/pages/Men%C3%BA/mainmenu.dart';
 import 'package:wchange/ui/pages/Mensajes/mainmensajes.dart';
-import 'package:wchange/ui/pages/publicaciones/mainpub.dart';
+import 'package:wchange/ui/pages/publicaciones/mainpub1.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: TabBarView(
           children: [
-            Publicaciones(),
+            ListaEstados(),
             Mensajes(),
             Menu(),
           ],

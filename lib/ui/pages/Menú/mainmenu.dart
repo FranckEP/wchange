@@ -16,6 +16,7 @@ class _Menu extends State<Menu> {
   _logout() async {
     try {
       await authController.logOut();
+      Get.to(() => LoginWidget());
     } catch (e) {
       print(e);
     }

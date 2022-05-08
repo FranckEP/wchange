@@ -14,9 +14,8 @@ class ControllerFirestore extends GetxController {
     return listado.snapshots();
   }
 
-  Future<void> crearestado(Map<String, dynamic> estados, foto) async {
+  Future<void> crearestado(Map<String, dynamic> estados) async {
     var url = '';
-    if (foto != null) url = await cargarfoto(foto, DateTime.now().toString());
     print(url);
     estados['fotoestado'] = url.toString();
 
@@ -33,11 +32,11 @@ class ControllerFirestore extends GetxController {
     //return true;
   }
 
-  Future<void> eliminarestados(String id) async {
+  eliminarestados(String id) async {
     await _db.collection('estados').doc(id).delete().catchError((e) {
       print(e);
     });
-    //return true;
+    return true;
   }
 
   Future<dynamic> cargarfoto(var foto, var idfoto) async {

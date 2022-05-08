@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/ui/pages/homepage.dart';
 import 'package:wchange/ui/pages/register/register.dart';
-import 'package:wchange/ui/pages/registro/mainregistro.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -124,9 +123,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                             final form = _formKey.currentState;
                             form!.save();
                             if (_formKey.currentState!.validate()) {
+                              print(controllerEmail.text);
+                              print(controllerPassword.text);
                               await _login(controllerEmail.text,
                                   controllerPassword.text);
-                               Get.to(() => const MyHomePage());
+                              await authController.usuario(email: controllerEmail.text, password: controllerEmail.text);
+                              Get.to(() => const MyHomePage());
                             }
                           },
                           child: const Text("Entrar"),

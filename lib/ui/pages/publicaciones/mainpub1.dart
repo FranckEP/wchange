@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/domain/controladores/firestore_images.dart';
 
@@ -21,7 +23,18 @@ class _ListaEstadosState extends State<ListaEstados> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: getInfo(context, controlp.readItems(), controluser.uid),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.red,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => _buildPopupDialog(context),
+          );
+        },
+      ),
     );
   }
 }
@@ -61,13 +74,15 @@ class VistaEstados extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ControllerFirestore controlp = Get.find();
+    AuthController authController = Get.find();
+    
     return ListView.builder(
         itemCount: estados.length == 0 ? 0 : estados.length,
         itemBuilder: (context, posicion) {
           print(estados[posicion].id);
           return Card(
             elevation: 1,
-            key: ValueKey(record.name),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.red.shade300, width: 2),
               borderRadius: BorderRadius.circular(10),
@@ -81,16 +96,19 @@ class VistaEstados extends StatelessWidget {
                   backgroundColor: Colors.blue,
                 ),
                 title: Text(
-                  '\n ${estados[posicion]['titulo']}\n',
+                  '\n${authController.nameUser}\n',
                 ),
                 subtitle: Text(estados[posicion]['information']),
+                //onLongPress: controlp.eliminarestados(estados[posicion].id),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
                     child: Icon(Icons.public_outlined, color: Colors.red),
-                    onPressed: () {},
+                    onPressed: () {
+                      launchUrlString(estados[posicion]['link']);
+                    },
                   ),
                   const SizedBox(width: 8),
                 ],
@@ -99,4 +117,104 @@ class VistaEstados extends StatelessWidget {
           );
         });
   }
+}
+
+Widget _buildPopupDialog(BuildContext context) {
+
+  TextEditingController controlinformation = TextEditingController();
+  TextEditingController controllink = TextEditingController();
+  TextEditingController controlApodo = TextEditingController();
+  ControllerFirestore controlestados = Get.find();
+
+  return AlertDialog(
+    title: const Text('Nueva oferta'),
+    content: SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+              maxLines: null,
+              keyboardType: TextInputType.text,
+              controller: controlApodo,
+              decoration: InputDecoration(
+                labelText: "Ingrese su apodo",
+                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+              )),
+          SizedBox(height: 10),
+          TextFormField(
+              maxLines: null,
+              keyboardType: TextInputType.text,
+              controller: controlinformation,
+              decoration: InputDecoration(
+                labelText: "Ingrese su nueva oferta",
+                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+              )),
+          SizedBox(height: 10),
+          TextFormField(
+              maxLines: null,
+              keyboardType: TextInputType.url,
+              controller: controllink,
+              decoration: InputDecoration(
+                labelText: "Link para más información",
+                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    ),
+    actions: <Widget>[
+      OutlinedButton(
+        onPressed: () {
+          var estados = <String, dynamic>{
+            'information': controlinformation.text,
+            'link': controllink.text,
+            'name': controlApodo.text,
+            //'uid': controluser.uid,
+          };
+          controlestados.crearestado(estados);
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          'Publicar',
+          style: TextStyle(color: Colors.red.shade300),
+        ),
+      ),
+    ],
+  );
 }
