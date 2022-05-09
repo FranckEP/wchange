@@ -1,5 +1,5 @@
 class Estados {
-  String title, uid, information, link;
+  String title, uid, information, link, fotoestado;
   String? id;
 
   Estados(
@@ -7,7 +7,8 @@ class Estados {
     this.id,
     required this.title, 
     required this.information,
-    required this.link}
+    required this.link,
+    required this.fotoestado}
   );
 
   factory Estados.fromJson(Map<String, dynamic> map){
@@ -17,7 +18,8 @@ class Estados {
       id: data['id'],
       title: data['title'], 
       information: data['information'],
-      link: data['link']);
+      link: data['link'],
+      fotoestado: data['fotoestado']);
   }
   Map<String, dynamic> toJson(){
     return {
@@ -25,7 +27,8 @@ class Estados {
       "uid": uid,
       "id": id,
       "information": information,
-      "link": link
+      "link": link,
+      "fotoestado": fotoestado
     };
   }
 }

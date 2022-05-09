@@ -15,10 +15,6 @@ class ControllerFirestore extends GetxController {
   }
 
   Future<void> crearestado(Map<String, dynamic> estados) async {
-    var url = '';
-    print(url);
-    estados['fotoestado'] = url.toString();
-
     await _db.collection('estados').doc().set(estados).catchError((e) {
       print(e);
     });
@@ -39,15 +35,4 @@ class ControllerFirestore extends GetxController {
     return true;
   }
 
-  Future<dynamic> cargarfoto(var foto, var idfoto) async {
-    final fs.Reference storageReference =
-        fs.FirebaseStorage.instance.ref().child("Estados");
-
-    fs.TaskSnapshot taskSnapshot =
-        await storageReference.child(idfoto).putFile(foto);
-
-    var url = await taskSnapshot.ref.getDownloadURL();
-    print('url:' + url.toString());
-    return url.toString();
-  }
 }

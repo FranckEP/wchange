@@ -30,7 +30,7 @@ class AuthManagement {
           email: email,
           password: password,
           pictureUrl:
-              'https://media.admagazine.com/photos/618a6acbcc7069ed5077ca7f/master/w_1600%2Cc_limit/68704.jpg');
+              'https://cdn-icons-png.flaticon.com/512/147/147140.png');
       auth.signUp(userModel: user);
       return true;
     } catch (e) {

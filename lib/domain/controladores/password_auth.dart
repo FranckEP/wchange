@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:wchange/data/repositories/auth.dart';
@@ -58,13 +56,5 @@ class PasswordAuth implements AuthInterface {
       return true;
     } on FirebaseAuthException catch (e) {
       return Future.error(e.code);
-    } catch (e) {
-      log(e.toString());
-    }
-    return false;
   }
-
-  // We throw an error if someone calls SignInWithGoogle, member of AuthInterface
-  @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+}}

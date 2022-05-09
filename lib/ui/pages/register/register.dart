@@ -17,9 +17,9 @@ class _RegisterState extends State<Register> {
   final controllerPassword = TextEditingController();
   AuthController authController = Get.find();
 
-  _signup(theEmail, thePassword, theName) async {
+  _signup(email, password, name) async {
     try {
-      await authController.signUp(theEmail, thePassword, theName);
+      await authController.signUp(email: email, password: password, name: name);
       Get.snackbar(
         "Sign Up",
         'OK',

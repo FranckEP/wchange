@@ -12,12 +12,13 @@ class StateController extends GetxController {
 
   StatusManager statusManager = Get.find();
   var listState = [].obs; //lista vacia observable
-  Future<void> addState({uid, title, information, link}) async {
+  Future<void> addState({uid, title, information, link, fotoestado}) async {
     var stateModel = Estados(
       title: title,
       uid: uid,
       information: information,
-      link: link);
+      link: link,
+      fotoestado: fotoestado);
     try {
       await statusManager.sendStatus(stateModel);
       listState.add(stateModel);

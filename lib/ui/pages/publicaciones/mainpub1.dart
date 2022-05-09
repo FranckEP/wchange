@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wchange/domain/controladores/authController.dart';
 import 'package:wchange/domain/controladores/firestore_images.dart';
+import 'package:wchange/ui/pages/Mensajes/mensajepriv.dart/menpriv.dart';
 
 class ListaEstados extends StatefulWidget {
   @override
@@ -92,12 +93,15 @@ class VistaEstados extends StatelessWidget {
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(
-                      'https://cdn-icons-png.flaticon.com/512/147/147144.png'),
+                      "https://cdn-icons-png.flaticon.com/512/147/147140.png"),
                   backgroundColor: Colors.blue,
                 ),
-                title: Text(
-                  '\n${authController.nameUser}\n',
+                title: GestureDetector( child: Text(
+                  '\n${estados[posicion]['name']}\n',
                 ),
+                onTap: () => {
+                Get.to(() => const Priv())
+              },),
                 subtitle: Text(estados[posicion]['information']),
                 //onLongPress: controlp.eliminarestados(estados[posicion].id),
               ),
@@ -123,8 +127,8 @@ Widget _buildPopupDialog(BuildContext context) {
 
   TextEditingController controlinformation = TextEditingController();
   TextEditingController controllink = TextEditingController();
-  TextEditingController controlApodo = TextEditingController();
   ControllerFirestore controlestados = Get.find();
+  AuthController authController = Get.find();
 
   return AlertDialog(
     title: const Text('Nueva oferta'),
@@ -133,27 +137,6 @@ Widget _buildPopupDialog(BuildContext context) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-              maxLines: null,
-              keyboardType: TextInputType.text,
-              controller: controlApodo,
-              decoration: InputDecoration(
-                labelText: "Ingrese su apodo",
-                fillColor: Colors.white,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  ),
-                ),
-              )),
-          SizedBox(height: 10),
           TextFormField(
               maxLines: null,
               keyboardType: TextInputType.text,
@@ -204,8 +187,8 @@ Widget _buildPopupDialog(BuildContext context) {
           var estados = <String, dynamic>{
             'information': controlinformation.text,
             'link': controllink.text,
-            'name': controlApodo.text,
-            //'uid': controluser.uid,
+            'name': authController.currentUser?.name,
+            'fotoestado': "https://cdn-icons-png.flaticon.com/512/147/147140.png"
           };
           controlestados.crearestado(estados);
           Navigator.of(context).pop();
