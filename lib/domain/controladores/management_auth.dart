@@ -34,6 +34,7 @@ class AuthManagement {
       auth.signUp(userModel: user);
       return true;
     } catch (e) {
+      print('Aquí está el error: ' + e.toString());
       return Future.error(e);
     }
   }

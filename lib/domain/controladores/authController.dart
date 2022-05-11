@@ -88,11 +88,9 @@ class AuthController extends GetxController {
 
   Future<void> signUp({name, email, password}) async {
     try {
-      await _manager.signUp(name: name, email: email, password: password);
-      _uid.value = currentUser!.id;
-      _photo.value =
-          'https://cdn-icons-png.flaticon.com/512/147/147140.png';
+      await _manager.signUp(name: name, email: email, password: password); 
     } catch (e) {
+     print('Aquí está el error xd xd xd authController: ' + e.toString());
       return Future.error(e);
     }
   }
